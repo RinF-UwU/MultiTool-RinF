@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "id": "multitool-rinf",
+  "version": "${version}",
+  "name": "MultiTool-RinF",
+  "description": "",
+  "authors": [
+    "RinF-UwU"
+  ],
+  "contact": {
+    "repo": "https://github.com/RinF-UwU/MultiTool-RinF"
+  },
+  "license": "MIT",
+  "icon": "assets/multitool-rinf/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "rinf.multitoolrinf.client.MultiTool_RinFClient"
+    ],
+    "main": [
+      "rinf.multitoolrinf.MultiTool_RinF"
+    ]
+  },
+  "mixins": [
+    "multitool-rinf.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}
