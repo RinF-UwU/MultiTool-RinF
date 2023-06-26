@@ -4,6 +4,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -14,23 +15,35 @@ import rinf.multitoolrinf.client.gui.Tab.TabPanel;
 @Mixin(HandledScreen.class)
 public abstract class HandlerScreenMixin {
 
-    private static final TabPanel tabPanel = new TabPanel();
+
+    @Shadow public abstract boolean mouseClicked(double mouseX, double mouseY, int button);
 
     @Inject(at = @At("TAIL"), method = "init")
     protected void init(CallbackInfo ci) {
-        tabPanel.setPosition(TabPanel.Position.LEFT);
+        TabPanel.setPosition(TabPanel.Position.LEFT);
+        TabPanel.tabPanel.init();
     }
     @Inject(at = @At("TAIL"), method = "render")
     public void render(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
-        tabPanel.render(context, mouseX, mouseY, delta);
+        TabPanel.tabPanel.render(context, mouseX, mouseY, delta);
     }
-    @Inject(at = @At("TAIL"), method = "mouseClicked")
+    @Inject(at = @At("HEAD"), method = "mouseClicked")
     public void mouseClicked(double mouseX, double mouseY, int button, CallbackInfoReturnable<Boolean> cir) {
-        tabPanel.mouseClicked(mouseX, mouseY, button);
+        TabPanel.tabPanel.mouseClicked(mouseX, mouseY, button);
+    }
+
+    @Inject(at = @At("HEAD"), method = "mouseReleased")
+    public void mouseReleased(double mouseX, double mouseY, int button, CallbackInfoReturnable<Boolean> cir) {
+        TabPanel.tabPanel.mouseReleased(mouseX, mouseY, button);
+    }
+
+    @Inject(at = @At("HEAD"), method = "mouseDragged")
+    public void mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY, CallbackInfoReturnable<Boolean> cir) {
+        TabPanel.tabPanel.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
     }
 
     public void mouseScrolled(double mouseX, double mouseY, double amount) {
-        tabPanel.mouseScrolled(mouseX, mouseY, amount);
+        TabPanel.tabPanel.mouseScrolled(mouseX, mouseY, amount);
     }
 
     @Inject(at = @At("HEAD"), method = "tick")

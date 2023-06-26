@@ -1,4 +1,4 @@
-package rinf.multitoolrinf.client.gui.Widgets;
+package rinf.multitoolrinf.client.gui.Widgets.Buttons;
 
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
@@ -22,7 +22,7 @@ public class RTabButton extends PressableWidget {
 
     @Override
     public void onPress() {
-        TabPanel.setCurrentTabMenu(tabMenu);
+        TabPanel.setTabMenu(tabMenu);
     }
 
     @Override
