@@ -45,7 +45,7 @@ public class TabPanel implements Drawable, Element {
         else {
             x = windowWidth - 4;
             tabButtonsOffsetX = 6;
-            if (currentTabMenu != null) currentTabMenu.init(windowWidth - currentTabMenu.getWight());
+            if (currentTabMenu != null) currentTabMenu.init(windowWidth - currentTabMenu.getWigth());
         }
     }
     public void addTabButton(Identifier icon, AbstractTabMenu tabMenu) {
@@ -189,7 +189,7 @@ public class TabPanel implements Drawable, Element {
             if (currentTabMenu != null) currentTabMenu.init(0);
         }
         else {
-            if (currentTabMenu != null) currentTabMenu.init(windowWidth - currentTabMenu.getWight());
+            if (currentTabMenu != null) currentTabMenu.init(windowWidth - currentTabMenu.getWigth());
         }
     }
 

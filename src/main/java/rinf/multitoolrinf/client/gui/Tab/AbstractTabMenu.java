@@ -9,6 +9,7 @@ import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.client.util.Window;
 import net.minecraft.util.Colors;
 import rinf.multitoolrinf.client.gui.Widgets.Buttons.RCloseButton;
+import rinf.multitoolrinf.client.gui.Widgets.Containers.RContainer;
 
 import java.util.List;
 
@@ -17,10 +18,10 @@ public abstract class AbstractTabMenu implements Drawable, Element {
     private static int resizeBorderSize = 4;
     private static int x = 0;
     private static int y = 0;
-    private static int wight = 150;
+    private static int wigth = 150;
     private static int height;
     private static int windowWight;
-    private static final List<ClickableWidget> content = Lists.newArrayList();
+    private final List<ClickableWidget> content = Lists.newArrayList();
     private RCloseButton closeButton = new RCloseButton(0, 0, button -> this.close());
     public AbstractTabMenu() {
         init(this.getX());
@@ -31,17 +32,23 @@ public abstract class AbstractTabMenu implements Drawable, Element {
         windowWight = window.getScaledWidth();
         this.setX(x);
         this.setHeight(window.getScaledHeight());
-        if (getWight() > window.getScaledWidth()) setWight(window.getScaledWidth());
+        if (getWigth() > window.getScaledWidth()) setWight(window.getScaledWidth());
+        else if (getWigth() < 36) setWight(36);
+        this.content.clear();
     }
 
     public void addDrawableElement(ClickableWidget widget) {
-        content.add(widget);
+        this.content.add(widget);
+    }
+
+    public void clearDrawableElements() {
+        this.content.clear();
     }
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         context.setShaderColor(1, 1, 1, 0.5f);
-        context.fill(x, y, x + wight, y + height, -804253680);
+        context.fill(x, y, x + wigth, y + height, -804253680);
         context.setShaderColor(1, 1, 1, 1);
 
         for (ClickableWidget widget : content) {
@@ -50,10 +57,10 @@ public abstract class AbstractTabMenu implements Drawable, Element {
 
         context.setShaderColor(1, 1, 1, 0.5f);
         if (TabPanel.getPosition() == TabPanel.Position.LEFT) {
-            if (mouseX > wight - resizeBorderSize && mouseX < x + wight)
-                context.fill(wight - resizeBorderSize, y, x + wight, y + height, Colors.GRAY);
-            else context.fill(wight - resizeBorderSize + 2, y, x + wight, y + height, Colors.GRAY);
-            closeButton.setPosition(wight - resizeBorderSize - 24, 6);
+            if (mouseX > wigth - resizeBorderSize && mouseX < x + wigth)
+                context.fill(wigth - resizeBorderSize, y, x + wigth, y + height, Colors.GRAY);
+            else context.fill(wigth - resizeBorderSize + 2, y, x + wigth, y + height, Colors.GRAY);
+            closeButton.setPosition(wigth - resizeBorderSize - 24, 6);
         } else {
             if (mouseX > x && mouseX < x + resizeBorderSize)
                 context.fill(x, y, x + resizeBorderSize, y + height, Colors.GRAY);
@@ -70,7 +77,7 @@ public abstract class AbstractTabMenu implements Drawable, Element {
 
         //Перевірка на початок зміни розміру
         if (TabPanel.getPosition() == TabPanel.Position.LEFT) {
-            if (mouseX < wight && mouseX > wight - resizeBorderSize) resize = true;
+            if (mouseX < wigth && mouseX > wigth - resizeBorderSize) resize = true;
         } else {
             if (mouseX > x && mouseX < x + resizeBorderSize) resize = true;
         }
@@ -94,12 +101,15 @@ public abstract class AbstractTabMenu implements Drawable, Element {
         //Зміна розміру
         if (resize) {
             if (TabPanel.getPosition() == TabPanel.Position.LEFT) {
-                wight = (int) mouseX + (resizeBorderSize / 2);
+                wigth = (int) mouseX + (resizeBorderSize / 2);
             } else {
-                wight += x - mouseX + (resizeBorderSize / 2);
-                x = windowWight - wight;
+                wigth += x - mouseX + (resizeBorderSize / 2);
+                x = windowWight - wigth;
             }
         }
+
+        if (getWigth() < 36) setWight(36);
+        if (TabPanel.getPosition() == TabPanel.Position.RIGHT) x = windowWight - wigth;
 
         return Element.super.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
     }
@@ -134,9 +144,9 @@ public abstract class AbstractTabMenu implements Drawable, Element {
 
     public void setY(int y) { AbstractTabMenu.y = y; }
 
-    public int getWight() { return wight; }
+    public int getWigth() { return wigth; }
 
-    public void setWight(int wight) { AbstractTabMenu.wight = wight; }
+    public void setWight(int wight) { AbstractTabMenu.wigth = wight; }
 
     public int getHeight() { return height; }
 

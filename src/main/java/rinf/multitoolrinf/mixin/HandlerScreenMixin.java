@@ -4,7 +4,6 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -15,15 +14,11 @@ import rinf.multitoolrinf.client.gui.Tab.TabPanel;
 @Mixin(HandledScreen.class)
 public abstract class HandlerScreenMixin {
 
-
-    @Shadow public abstract boolean mouseClicked(double mouseX, double mouseY, int button);
-
     @Inject(at = @At("TAIL"), method = "init")
     protected void init(CallbackInfo ci) {
-        TabPanel.setPosition(TabPanel.Position.LEFT);
         TabPanel.tabPanel.init();
     }
-    @Inject(at = @At("TAIL"), method = "render")
+    @Inject(at = @At("HEAD"), method = "render")
     public void render(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
         TabPanel.tabPanel.render(context, mouseX, mouseY, delta);
     }
